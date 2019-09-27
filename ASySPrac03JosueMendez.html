@@ -1,0 +1,551 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>PR&Aacute;CTICA 03. Se&ntilde;ales en tiempo discreto</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-27"><meta name="DC.source" content="Practica03.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>PR&Aacute;CTICA 03. Se&ntilde;ales en tiempo discreto</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Integrantes</a></li><li><a href="#2">Objetivos</a></li><li><a href="#3">Introducci&oacute;n</a></li><li><a href="#4">Desarrollo</a></li><li><a href="#14">Ap&eacute;ndices</a></li><li><a href="#15">Referencias</a></li></ul></div><h2>Integrantes<a name="1"></a></h2><div><ul><li>Cuevas Morales Sa&uacute;l As&iacute;s</li><li>Gonzalez Z&uacute;&ntilde;iga Alexis Bryan</li><li>M&eacute;ndez Pallares Josu&eacute;</li><li>Vallejo Camarillo Mois&eacute;s Eduardo</li></ul></div><h2>Objetivos<a name="2"></a></h2><div><ol><li>Manipulaci&oacute;n b&aacute;sica de MATLAB.</li><li>Gr&aacute;ficas de se&ntilde;ales reales y complejas discretas.</li><li>Transformaci&oacute;n de se&ntilde;ales discretas (escalamientos y traslaciones).</li><li>C&aacute;lculo de energ&iacute;a y potencia de se&ntilde;ales discretas.</li></ol></div><h2>Introducci&oacute;n<a name="3"></a></h2><p>El escalamiento horizontal de se&ntilde;ales en tiempo discreto se puede definir como los alargamientos y encogimientos que sufre una funci&oacute;n cuando se realiza una multiplicaci&oacute;n o divisi&oacute;n a la variable que esta se&ntilde;al maneje. Si la variable sufre una multiplicaci&oacute;n la funci&oacute;n se encoger&aacute;, transportando todos los puntos en x al punto resultante de la divisi&oacute;n entre el punto inicial con el numero deseado; cabe remarcar que solo aquellas que den como resultado un numero entero son las que ser&aacute;n graficadas en la funci&oacute;n resultante. En el caso que se realice una divisi&oacute;n la funci&oacute;n se alargar&aacute;, transportando todos los puntos en x al punto resultante del producto entre el punto inicial con el numero deseado y en el caso que se haga una multiplicaci&oacute;n o divisi&oacute;n con un numero negativo, la funci&oacute;n se invertir&aacute; con respecto al eje de las x &amp; posteriormente se realizar&aacute; el respectivo encogimiento o alargamiento.</p><p>Ejemplos:</p><p>Si se tiene la se&ntilde;al en tiempo discreto, definida de la sig. manera:</p><pre class="language-matlab">n=-12:1:12;
+fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+(3.*(heaviside(n-3)-heaviside(n-5)));
+stem(n,fun(n));
+</pre><div><ul><li>Para que tenga un escalamiento en el cual se comprima a la mitad, obtenemos:</li></ul></div><pre class="language-matlab">n1=2.*n
+fun= @(n1) (n1.*(heaviside(n1)-heaviside(n1-3)))+(3.*(heaviside(n1-3)-heaviside(n1-5)));
+stem(n,fun(n1));
+</pre><p>Lo cual tambi&eacute;n podr&iacute;a representarse de la siguiente forma:</p><pre class="language-matlab">fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+(3.*(heaviside(n-3)-heaviside(n-5)));
+stem(n,fun(2*n));
+</pre><div><ul><li>Si queremos una se&ntilde;al invertida de esta misma se&ntilde;al se proceder&iacute;a de la sig. manera:</li></ul></div><pre class="language-matlab">n2=-n
+fun= @(n2) (n2.*(heaviside(n2)-heaviside(n2-3)))+(3.*(heaviside(n2-3)-heaviside(n2-5)));
+stem(n,fun(n2));
+</pre><p>Que tambi&eacute;n podr&iacute;a ser representado como:</p><pre class="language-matlab">fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+(3.*(heaviside(n-3)-heaviside(n-5)));
+stem(n,fun(-n));
+</pre><div><ul><li>Para un alargamiento de la se&ntilde;al, procedemos con el siguiente c&oacute;digo:</li></ul></div><pre class="language-matlab">n3=n./2
+fun= @(n3) (n3.*(heaviside(n3)-heaviside(n3-3)))+(3.*(heaviside(n3-3)-heaviside(n3-5)));
+stem(n,fun(n3));
+</pre><p>Este escalamiento tambi&eacute;n se puede representar de la sig. manera:</p><pre class="language-matlab">fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+(3.*(heaviside(n-3)-heaviside(n-5)));
+stem(n,fun(n/2))
+</pre><div><ul><li>Por &uacute;ltimo si queremos un escalamiento con inversi&oacute;n de la se&ntilde;al, se puede hacer lo siguiente.</li></ul></div><pre class="language-matlab"><span class="comment">% Declaramos a n4=-n/2; o bien lo podemos declarar como n4=n2/2.</span>
+n4=-n/2;
+<span class="comment">% y despu&eacute;s evaluamos con n4 en la funci&oacute;n.</span>
+fun= @(n4) (n4.*(heaviside(n4)-heaviside(n4-3)))+(3.*(heaviside(n4-3)-heaviside(n4-5)));
+stem(n,fun(n4))
+</pre><p>Tambi&eacute;n podemos representar el escalamiento anterior de la sig. forma:</p><pre class="language-matlab">fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+(3.*(heaviside(n-3)-heaviside(n-5)));
+stem(n,fun(-n/2))
+</pre><h2>Desarrollo<a name="4"></a></h2><p><b>Problema 1.</b> Crea una funci&oacute;n que se llame fun1 y reciba dos parametros <img src="Practica03_eq01003107565813904020.png" alt="$\Omega$"> y <img src="Practica03_eq05508344529756732484.png" alt="$a$"> la funci&oacute;n debe regresar la evaluaci&oacute;n <img src="Practica03_eq03646802660506946535.png" alt="$f[n]=r^ncos[\Omega n]+ r^nsen(\Omega n)j$">, esta funci&oacute;n debe trabajar con <img src="Practica03_eq02250910504099747793.png" alt="$r\in R^+$">, <img src="Practica03_eq16652459112341690445.png" alt="$\Omega\in R$"> y <img src="Practica03_eq13105139821992525800.png" alt="$n\in  N^n$">.</p><pre class="language-matlab"><span class="keyword">function</span> [ fn ] = fun1( r, omg, n )
+fn= r.^(n).*cos(omg.*n) + r.^(n).*sin(omg.*n).*1j;
+<span class="keyword">return</span>
+<span class="keyword">end</span>
+</pre><p><b>Problema 2.</b> Construya una funci&oacute;n que gr&aacute;fique funciones de <img src="Practica03_eq12888934164539987532.png" alt="$f:N\rightarrow R$"> en el formato de su elecci&oacute;n y pruebe su c&oacute;digo mostrando la gr&aacute;fica de <img src="Practica03_eq14492615976455928922.png" alt="$x[n]=na^nu[n]$"> vs <img src="Practica03_eq08984225997457563733.png" alt="$n$"> para <img src="Practica03_eq08133761054732296635.png" alt="$n\in {-2,...,10}$"> para <img src="Practica03_eq00212765013998882747.png" alt="$a=0.9$">.</p><pre class="codeinput">F= @(a,n) n.*(a.^n).*heaviside(n);
+m=-2:1:10;
+Graphics(F,.9,m)
+</pre><img vspace="5" hspace="5" src="Practica03_01.png" alt=""> <p><b>Problema 3.</b> Construya una funci&oacute;n que gr&aacute;fique funciones de <img src="Practica03_eq16894167298513186129.png" alt="$f:N\rightarrow R^2$"> en el formato de su elecci&oacute;n y pruebe su c&oacute;digo mostrando la gr&aacute;fica de la funci&oacute;n exponencial del primer problema, no debe incluir el c&oacute;digo, solo el uso de la funci&oacute;n para mostrarla gr&aacute;fica. Reporte la gr&aacute;fica de <img src="Practica03_eq08869918233192190351.png" alt="$f[n]$"> para <img src="Practica03_eq12706977765372392117.png" alt="$r=1.1$">, <img src="Practica03_eq03933324021199855378.png" alt="$\Omega=0.5$"> y <img src="Practica03_eq05063201140590064251.png" alt="$n\in{-2,...,20}$">. Reporte la gr&aacute;fica de <img src="Practica03_eq05380890773232186944.png" alt="$|f[n]|$"> vs <img src="Practica03_eq08984225997457563733.png" alt="$n$"> y <img src="Practica03_eq12048250087022819900.png" alt="$\angle f[n]$"> vs <img src="Practica03_eq08984225997457563733.png" alt="$n$">.</p><pre class="codeinput">r=1.1;
+omg=0.5;
+n=-2:1:20;
+grafica(r,omg,n);
+</pre><img vspace="5" hspace="5" src="Practica03_02.png" alt=""> <img vspace="5" hspace="5" src="Practica03_03.png" alt=""> <img vspace="5" hspace="5" src="Practica03_04.png" alt=""> <img vspace="5" hspace="5" src="Practica03_05.png" alt=""> <p><b>Problema 4.</b> Programe una funci&oacute;n que calcule la energ&iacute;a de una se&ntilde;al en tiempo discreto la fucion se debe llamar energiadis. La funci&oacute;n recibe dos param&eacute;tros de entrada: el vector de tiempo y las alturas asignadas. La funci&oacute;n regresa la energia de la se&ntilde;al y despliega la gr&aacute;fica de la se&ntilde;al.</p><pre class="language-matlab"><span class="keyword">function</span> energiadis(t, h)
+A=h.^2;
+sum(A)
+stem(t,h)
+grid <span class="string">on</span>;
+<span class="keyword">end</span>
+</pre><p><b>Problema 5.</b> Encuentra la energ&iacute;a de la se&ntilde;al mostrada en la sig. figura.</p><pre class="codeinput">n1=-3:3;
+x1=@(n1) n1;
+figure
+stem(n1,x1(n1))
+grid <span class="string">on</span>;
+xlabel(<span class="string">'n1'</span>);
+ylabel(<span class="string">'x1[n1]'</span>);
+title(<span class="string">'Se&ntilde;al c)'</span>)
+</pre><img vspace="5" hspace="5" src="Practica03_06.png" alt=""> <p>C&aacute;lculo de la energ&iacute;a.</p><pre class="codeinput">n=[-3:1:3]; <span class="comment">%vector del tiempo discreto</span>
+a=[-9,-6,-3,0,3,6,9]; <span class="comment">%vector de alturas</span>
+energiadis(n,a) <span class="comment">%c&aacute;lculo de la energ&iacute;a por medio de la funci&oacute;n energiadis</span>
+</pre><pre class="codeoutput">
+ans =
+
+   252
+
+</pre><img vspace="5" hspace="5" src="Practica03_07.png" alt=""> <p><b>Problema 6.</b> Para la se&ntilde;al mostrada en la fig., graficar las sig. se&ntilde;ales:</p><pre class="codeinput">n=-8:18;
+fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+((6-n).*(heaviside(n-3)-heaviside(n-6)));
+figure
+stem(n,fun(n));
+grid <span class="string">on</span>;
+xlabel(<span class="string">'n'</span>);
+ylabel(<span class="string">'x[n]'</span>);
+title(<span class="string">'Se&ntilde;al Lathi 3.2.3'</span>)
+</pre><img vspace="5" hspace="5" src="Practica03_08.png" alt=""> <p>a) x[-n]</p><p>b) x[n+6]</p><p>c) x[n-6]</p><p>d) x[3n]</p><p>e) x[n/3]</p><p>f) x[3-n]</p><pre class="codeinput">n=-8:18;
+fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+((6-n).*(heaviside(n-3)-heaviside(n-6)));
+P323(fun, n);
+</pre><img vspace="5" hspace="5" src="Practica03_09.png" alt=""> <h2>Ap&eacute;ndices<a name="14"></a></h2><p>Funci&oacute;n Graphics utilizada en el Problema 2.</p><pre class="language-matlab"><span class="keyword">function</span> Graphics(fun, a, n)
+stem(n, fun(a,n))
+grid <span class="string">on</span>;
+<span class="keyword">end</span>
+</pre><p>Funci&oacute;n grafica utilizada para resolver el Problema 3.</p><pre class="language-matlab"><span class="keyword">function</span> [] = grafica(r,omg,n)
+g=fun1(r,omg,n); <span class="comment">%se hace uso de fun1 creada anteriormente</span>
+img= imag(g); <span class="comment">%componente real de cada elemento de g</span>
+re= real(g); <span class="comment">%componente imaginario de cada elemento de g</span>
+</pre><pre class="language-matlab"><span class="comment">%gr&aacute;fica de n vs real vs imaginario</span>
+figure1 = figure;
+axes1 = axes(<span class="string">'Parent'</span>,figure1);
+view(axes1,[-37.5 30]);
+grid(axes1,<span class="string">'on'</span>);
+hold(axes1,<span class="string">'on'</span>);
+stem3(n,re,img,<span class="keyword">...</span>
+    <span class="string">'Color'</span>,[0.105882354080677 0.309803932905197 0.207843139767647]);
+xlabel(<span class="string">'n'</span>);
+ylabel(<span class="string">'real'</span>);
+zlabel(<span class="string">'imaginario'</span>);
+title(<span class="string">'\rmf : N \rightarrow R^2'</span>);
+</pre><pre class="language-matlab"><span class="comment">%gr&aacute;fica de f[n] vs n</span>
+figure2 = figure;
+axes1 = axes(<span class="string">'Parent'</span>,figure2,<span class="keyword">...</span>
+    <span class="string">'Position'</span>,[0.129155405405405 0.11 0.775 0.815]);
+box(axes1,<span class="string">'on'</span>);
+grid(axes1,<span class="string">'on'</span>);
+hold(axes1,<span class="string">'on'</span>);
+stem(n,abs(g),<span class="string">'LineWidth'</span>,1,<span class="string">'Color'</span>,[1 0 1]);
+xlabel(<span class="string">'n'</span>);
+ylabel(<span class="string">'\rm\mid\it f[n] \rm\mid'</span>);
+title(<span class="string">'\rm\mid\it f[n] \rm\mid vs \itn'</span>);
+</pre><pre class="language-matlab"><span class="comment">%gr&aacute;fica del &aacute;ngulo de desfase vs n usando angle</span>
+figure3 = figure;
+axes1 = axes(<span class="string">'Parent'</span>,figure3);
+hold(axes1,<span class="string">'on'</span>);
+stem(n,angle(g),<span class="string">'LineWidth'</span>,1,<span class="keyword">...</span>
+    <span class="string">'Color'</span>,[0.929411768913269 0.694117665290833 0.125490203499794]);
+ylabel(<span class="string">'\anglef[n]'</span>);
+xlabel(<span class="string">'n'</span>);
+title(<span class="string">'\rm\angle \itf[n]\rm vs \itn\rm usando angle'</span>);
+box(axes1,<span class="string">'on'</span>);
+grid(axes1,<span class="string">'on'</span>);
+</pre><pre class="language-matlab"><span class="comment">%gr&aacute;fica del &aacute;ngulo de desfase vs n usando atan2</span>
+figure4 = figure;
+axes1 = axes(<span class="string">'Parent'</span>,figure4);
+hold(axes1,<span class="string">'on'</span>);
+stem(n,atan2(img,re),<span class="string">'LineWidth'</span>,1,<span class="keyword">...</span>
+    <span class="string">'Color'</span>,[0.929411768913269 0.694117665290833 0.125490203499794]);
+ylabel(<span class="string">'\anglef[n]'</span>);
+xlabel(<span class="string">'n'</span>);
+title(<span class="string">'\rm\angle \itf[n]\rm vs \itn\rm usando atan2'</span>);
+box(axes1,<span class="string">'on'</span>);
+grid(axes1,<span class="string">'on'</span>);
+<span class="keyword">end</span>
+</pre><p>Funci&oacute;n P323 utilizada para resolver el Problema 6.</p><pre class="language-matlab"><span class="keyword">function</span> P323(fun, n)
+<span class="comment">% Se resuelve el inciso a).</span>
+subplot(2,3,1)
+stem(n, fun(-n));
+title(<span class="string">'Lathi 3.2.3 inciso a)'</span>)
+xlabel(<span class="string">'n'</span>);
+ylabel(<span class="string">'f[-n]'</span>);
+grid;
+</pre><pre class="language-matlab"><span class="comment">% Se resuelve el inciso b).</span>
+subplot(2,3,2)
+stem(n, fun(n+6));
+title(<span class="string">'Lathi 3.2.3 inciso b)'</span>)
+xlabel(<span class="string">'n'</span>);
+ylabel(<span class="string">'f[n+6]'</span>);
+grid;
+</pre><pre class="language-matlab"><span class="comment">% Se resuelve el inciso c).</span>
+subplot(2,3,3)
+stem(n, fun(n-6));
+title(<span class="string">'Lathi 3.2.3 inciso c)'</span>)
+xlabel(<span class="string">'n'</span>);
+ylabel(<span class="string">'f[n-6]'</span>);
+grid;
+</pre><pre class="language-matlab"><span class="comment">% Se resuelve el inciso d).</span>
+subplot(2,3,4)
+stem(n, fun(3*n));
+title(<span class="string">'Lathi 3.2.3 inciso d)'</span>)
+xlabel(<span class="string">'n'</span>);
+ylabel(<span class="string">'f[3n]'</span>);
+grid;
+</pre><pre class="language-matlab"><span class="comment">% Se resuelve el inciso e).</span>
+subplot(2,3,5)
+stem(n, fun(n/3));
+title(<span class="string">'Lathi 3.2.3 inciso e)'</span>)
+xlabel(<span class="string">'n'</span>);
+ylabel(<span class="string">'f[n/3]'</span>);
+grid;
+</pre><pre class="language-matlab"><span class="comment">% Se resuelve el inciso f).</span>
+subplot(2,3,6)
+stem(n, fun(3-n));
+title(<span class="string">'Lathi 3.2.3 inciso f)'</span>)
+xlabel(<span class="string">'n'</span>);
+ylabel(<span class="string">'f[3-n]'</span>);
+grid;
+<span class="keyword">end</span>
+</pre><h2>Referencias<a name="15"></a></h2><div><ul><li>B. P. Lathi. (2005). Linear Systems and Signals. 198 Madison Avenue, New York, New York 10016: Oxford University Press.</li><li>Mart&iacute;nez, R. [Mate y as&iacute;] (2018, Agosto 17) "Escalamiento horizontal de se&ntilde;ales en tiempo discreto (6)". Recuperado de: <a href="https://www.youtube.com/watch?v=lpFU5D7oY1w&amp;feature=youtu.be">https://www.youtube.com/watch?v=lpFU5D7oY1w&amp;feature=youtu.be</a></li><li>H. P. Hsu. (1995). Signals and systems. Recuperado de: <a href="http://s1.nonlinear.ir/epublish/book/Schaums_Outline_Of_Theory_and_Problems_of_Signals_and_Systems_0071829466.pdf">http://s1.nonlinear.ir/epublish/book/Schaums_Outline_Of_Theory_and_Problems_of_Signals_and_Systems_0071829466.pdf</a></li><li>MathWorks. Subplot: Create axes in tiled positions. Recuperado de: <a href="https://www.mathworks.com/help/matlab/ref/subplot.html">https://www.mathworks.com/help/matlab/ref/subplot.html</a></li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% PRÁCTICA 03. Señales en tiempo discreto
+
+%% Integrantes
+%
+% * Cuevas Morales Saúl Asís
+% * Gonzalez Zúñiga Alexis Bryan
+% * Méndez Pallares Josué
+% * Vallejo Camarillo Moisés Eduardo
+%
+%% Objetivos
+%
+% # Manipulación básica de MATLAB.
+% # Gráficas de señales reales y complejas discretas.
+% # Transformación de señales discretas (escalamientos y traslaciones).
+% # Cálculo de energía y potencia de señales discretas.
+%
+%% Introducción
+% 
+% El escalamiento horizontal de señales en tiempo discreto se puede definir
+% como los alargamientos y encogimientos que sufre una función cuando se
+% realiza una multiplicación o división a la variable que esta señal maneje.
+% Si la variable sufre una multiplicación la función se encogerá,
+% transportando todos los puntos en x al punto resultante de la división
+% entre el punto inicial con el numero deseado; cabe remarcar que solo
+% aquellas que den como resultado un numero entero son las que serán
+% graficadas en la función resultante. En el caso que se realice una división
+% la función se alargará, transportando todos los puntos en x al punto
+% resultante del producto entre el punto inicial con el numero deseado y en
+% el caso que se haga una multiplicación o división con un numero negativo,
+% la función se invertirá con respecto al eje de las x & posteriormente se
+% realizará el respectivo encogimiento o alargamiento.
+% 
+% Ejemplos:
+%
+% Si se tiene la señal en tiempo discreto, definida de la sig. manera:
+% 
+%   n=-12:1:12;
+%   fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+(3.*(heaviside(n-3)-heaviside(n-5)));
+%   stem(n,fun(n));
+%
+% * Para que tenga un escalamiento en el cual se comprima a la mitad,
+% obtenemos:
+% 
+%   n1=2.*n
+%   fun= @(n1) (n1.*(heaviside(n1)-heaviside(n1-3)))+(3.*(heaviside(n1-3)-heaviside(n1-5)));
+%   stem(n,fun(n1));
+% 
+% Lo cual también podría representarse de la siguiente forma:
+%
+%   fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+(3.*(heaviside(n-3)-heaviside(n-5)));
+%   stem(n,fun(2*n));
+% 
+% * Si queremos una señal invertida de esta misma señal se procedería de la
+% sig. manera:
+% 
+%   n2=-n
+%   fun= @(n2) (n2.*(heaviside(n2)-heaviside(n2-3)))+(3.*(heaviside(n2-3)-heaviside(n2-5)));
+%   stem(n,fun(n2));
+% 
+% Que también podría ser representado como:
+% 
+%   fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+(3.*(heaviside(n-3)-heaviside(n-5)));
+%   stem(n,fun(-n));
+% 
+% * Para un alargamiento de la señal, procedemos con el siguiente código:
+% 
+%   n3=n./2
+%   fun= @(n3) (n3.*(heaviside(n3)-heaviside(n3-3)))+(3.*(heaviside(n3-3)-heaviside(n3-5)));
+%   stem(n,fun(n3));
+% 
+% Este escalamiento también se puede representar de la sig. manera:
+% 
+%   fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+(3.*(heaviside(n-3)-heaviside(n-5)));
+%   stem(n,fun(n/2))
+%
+% * Por último si queremos un escalamiento con inversión de la señal, se
+% puede hacer lo siguiente.
+% 
+%   % Declaramos a n4=-n/2; o bien lo podemos declarar como n4=n2/2.
+%   n4=-n/2;
+%   % y después evaluamos con n4 en la función.
+%   fun= @(n4) (n4.*(heaviside(n4)-heaviside(n4-3)))+(3.*(heaviside(n4-3)-heaviside(n4-5)));
+%   stem(n,fun(n4))
+% 
+% También podemos representar el escalamiento anterior de la sig. forma:
+% 
+%   fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+(3.*(heaviside(n-3)-heaviside(n-5)));
+%   stem(n,fun(-n/2))
+% 
+%% Desarrollo
+%%
+% *Problema 1.*
+% Crea una función que se llame fun1 y reciba dos parametros $\Omega$ y $a$
+% la función debe regresar la evaluación $f[n]=r^ncos[\Omega n]+ r^nsen(\Omega n)j$,
+% esta función debe trabajar con $r\in R^+$, $\Omega\in R$ y $n\in  N^n$.
+% 
+%   function [ fn ] = fun1( r, omg, n )
+%   fn= r.^(n).*cos(omg.*n) + r.^(n).*sin(omg.*n).*1j;
+%   return
+%   end
+%%
+% *Problema 2.*
+% Construya una función que gráfique funciones de $f:N\rightarrow R$ en el
+% formato de su elección y pruebe su código mostrando la gráfica de
+% $x[n]=na^nu[n]$ vs $n$ para $n\in {-2,...,10}$ para $a=0.9$.
+% 
+F= @(a,n) n.*(a.^n).*heaviside(n);
+m=-2:1:10;  
+Graphics(F,.9,m)
+%%
+% *Problema 3.*
+% Construya una función que gráfique funciones de $f:N\rightarrow R^2$ en
+% el formato de su elección y pruebe su código mostrando la gráfica de la
+% función exponencial del primer problema, no debe incluir el código, solo
+% el uso de la función para mostrarla gráfica. Reporte la gráfica de $f[n]$
+% para $r=1.1$, $\Omega=0.5$ y $n\in{-2,...,20}$. Reporte la gráfica de
+% $|f[n]|$ vs $n$ y $\angle f[n]$ vs $n$.
+% 
+r=1.1;
+omg=0.5;
+n=-2:1:20;
+grafica(r,omg,n);
+%%
+% *Problema 4.*
+% Programe una función que calcule la energía de una señal en tiempo discreto
+% la fucion se debe llamar energiadis. La función recibe dos paramétros de
+% entrada: el vector de tiempo y las alturas asignadas. La función regresa
+% la energia de la señal y despliega la gráfica de la señal.
+% 
+%   function energiadis(t, h)
+%   A=h.^2;
+%   sum(A)
+%   stem(t,h)
+%   grid on;
+%   end
+% 
+%%
+% *Problema 5.*
+% Encuentra la energía de la señal mostrada en la sig. figura.
+%% 
+n1=-3:3;
+x1=@(n1) n1;
+figure
+stem(n1,x1(n1))
+grid on;
+xlabel('n1');
+ylabel('x1[n1]');
+title('Señal c)')
+%%
+% Cálculo de la energía.
+%
+n=[-3:1:3]; %vector del tiempo discreto
+a=[-9,-6,-3,0,3,6,9]; %vector de alturas
+energiadis(n,a) %cálculo de la energía por medio de la función energiadis
+%%
+% *Problema 6.*
+% Para la señal mostrada en la fig., graficar las sig. señales:
+%
+n=-8:18;
+fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+((6-n).*(heaviside(n-3)-heaviside(n-6)));
+figure
+stem(n,fun(n));
+grid on;
+xlabel('n');
+ylabel('x[n]');
+title('Señal Lathi 3.2.3')
+%% 
+% a) x[-n]
+% 
+% b) x[n+6]
+% 
+% c) x[n-6]
+% 
+% d) x[3n]
+% 
+% e) x[n/3]
+% 
+% f) x[3-n]
+% 
+% 
+n=-8:18;
+fun= @(n) (n.*(heaviside(n)-heaviside(n-3)))+((6-n).*(heaviside(n-3)-heaviside(n-6)));
+P323(fun, n);
+%% Apéndices
+% 
+% Función Graphics utilizada en el Problema 2.
+% 
+%   function Graphics(fun, a, n)
+%   stem(n, fun(a,n))
+%   grid on;
+%   end 
+% 
+% Función grafica utilizada para resolver el Problema 3.
+% 
+%   function [] = grafica(r,omg,n)
+%   g=fun1(r,omg,n); %se hace uso de fun1 creada anteriormente
+%   img= imag(g); %componente real de cada elemento de g
+%   re= real(g); %componente imaginario de cada elemento de g
+%   
+%   %gráfica de n vs real vs imaginario
+%   figure1 = figure;
+%   axes1 = axes('Parent',figure1);
+%   view(axes1,[-37.5 30]);
+%   grid(axes1,'on');
+%   hold(axes1,'on');
+%   stem3(n,re,img,...
+%       'Color',[0.105882354080677 0.309803932905197 0.207843139767647]);
+%   xlabel('n');
+%   ylabel('real');
+%   zlabel('imaginario');
+%   title('\rmf : N \rightarrow R^2');
+%   
+%   %gráfica de f[n] vs n
+%   figure2 = figure;
+%   axes1 = axes('Parent',figure2,...
+%       'Position',[0.129155405405405 0.11 0.775 0.815]);
+%   box(axes1,'on');
+%   grid(axes1,'on');
+%   hold(axes1,'on');
+%   stem(n,abs(g),'LineWidth',1,'Color',[1 0 1]);
+%   xlabel('n');
+%   ylabel('\rm\mid\it f[n] \rm\mid');
+%   title('\rm\mid\it f[n] \rm\mid vs \itn');
+%   
+%   %gráfica del ángulo de desfase vs n usando angle
+%   figure3 = figure;
+%   axes1 = axes('Parent',figure3);
+%   hold(axes1,'on');
+%   stem(n,angle(g),'LineWidth',1,...
+%       'Color',[0.929411768913269 0.694117665290833 0.125490203499794]);
+%   ylabel('\anglef[n]');
+%   xlabel('n');
+%   title('\rm\angle \itf[n]\rm vs \itn\rm usando angle');
+%   box(axes1,'on');
+%   grid(axes1,'on');
+%   
+%   %gráfica del ángulo de desfase vs n usando atan2
+%   figure4 = figure;
+%   axes1 = axes('Parent',figure4);
+%   hold(axes1,'on');
+%   stem(n,atan2(img,re),'LineWidth',1,...
+%       'Color',[0.929411768913269 0.694117665290833 0.125490203499794]);
+%   ylabel('\anglef[n]');
+%   xlabel('n');
+%   title('\rm\angle \itf[n]\rm vs \itn\rm usando atan2');
+%   box(axes1,'on');
+%   grid(axes1,'on');
+%   end
+% 
+% Función P323 utilizada para resolver el Problema 6.
+% 
+%   function P323(fun, n)
+%   % Se resuelve el inciso a).
+%   subplot(2,3,1)
+%   stem(n, fun(-n));
+%   title('Lathi 3.2.3 inciso a)')
+%   xlabel('n');
+%   ylabel('f[-n]');
+%   grid;
+%   
+%   % Se resuelve el inciso b).
+%   subplot(2,3,2)
+%   stem(n, fun(n+6));
+%   title('Lathi 3.2.3 inciso b)')
+%   xlabel('n');
+%   ylabel('f[n+6]');
+%   grid;
+%   
+%   % Se resuelve el inciso c).
+%   subplot(2,3,3)
+%   stem(n, fun(n-6));
+%   title('Lathi 3.2.3 inciso c)')
+%   xlabel('n');
+%   ylabel('f[n-6]');
+%   grid;
+%   
+%   % Se resuelve el inciso d).
+%   subplot(2,3,4)
+%   stem(n, fun(3*n));
+%   title('Lathi 3.2.3 inciso d)')
+%   xlabel('n');
+%   ylabel('f[3n]');
+%   grid;
+%   
+%   % Se resuelve el inciso e).
+%   subplot(2,3,5)
+%   stem(n, fun(n/3));
+%   title('Lathi 3.2.3 inciso e)')
+%   xlabel('n');
+%   ylabel('f[n/3]');
+%   grid;
+%   
+%   % Se resuelve el inciso f).
+%   subplot(2,3,6)
+%   stem(n, fun(3-n));
+%   title('Lathi 3.2.3 inciso f)')
+%   xlabel('n');
+%   ylabel('f[3-n]');
+%   grid;
+%   end
+% 
+%% Referencias
+% 
+% * B. P. Lathi. (2005). Linear Systems and Signals. 198 Madison Avenue,
+% New York, New York 10016: Oxford University Press.
+% * Martínez, R. [Mate y así] (2018, Agosto 17) "Escalamiento horizontal
+% de señales en tiempo discreto (6)". Recuperado de: 
+% <https://www.youtube.com/watch?v=lpFU5D7oY1w&feature=youtu.be>
+% * H. P. Hsu. (1995). Signals and systems. Recuperado de: 
+% <http://s1.nonlinear.ir/epublish/book/Schaums_Outline_Of_Theory_and_Problems_of_Signals_and_Systems_0071829466.pdf>
+% * MathWorks. Subplot: Create axes in tiled positions. Recuperado de:
+% <https://www.mathworks.com/help/matlab/ref/subplot.html>
+##### SOURCE END #####
+--></body></html>
